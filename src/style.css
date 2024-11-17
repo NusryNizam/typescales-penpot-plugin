@@ -7,10 +7,77 @@ body {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   padding: 10px;
-  max-width: 260px;
   margin: auto;
 }
 
 p {
   margin-block-end: 0.75rem;
+}
+
+.input-container {
+  display: flex;
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-16);
+}
+
+.typescale {
+  padding: var(--spacing-8);
+  padding-top: var(--spacing-12);
+  margin-bottom: var(--spacing-20);
+  background: var(--db-secondary);
+  border-radius: 4px;
+  overflow-x: scroll;
+  text-wrap: nowrap;
+}
+
+body[data-theme="dark"] .typescale {
+  background-color: var(--db-secondary);
+}
+
+body[data-theme="light"] .typescale {
+  background-color: var(--lb-secondary);
+}
+
+.base-font {
+  color: var(--success-500);
+  font-weight: bold;
+}
+
+.typescale-container {
+  padding-bottom: var(--spacing-4);
+}
+
+.info {
+  margin-bottom: var(--spacing-4);
+}
+
+.sticky-footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  padding-top: var(--spacing-8);
+}
+
+body[data-theme="dark"] .sticky-footer {
+  background-color: var(--db-primary);
+}
+
+body[data-theme="light"] .sticky-footer {
+  background-color: var(--lb-primary);
+}
+
+.submit-button {
+  margin-left: auto;
+}
+
+body[data-theme="dark"] .base-size {
+  color: var(--da-quaternary);
+}
+
+body[data-theme="light"] .base-size {
+  color: var(--la-quaternary);
+}
+
+.select-custom {
+  min-width: 216px;
 }

@@ -1,6 +1,6 @@
 penpot.ui.open("Typescales", `?theme=${penpot.theme}`, {
-  width: 640,
-  height: 500,
+  width: 760,
+  height: 640,
 });
 
 penpot.ui.onMessage<{ type: string; data: any }>((message) => {
