@@ -1,0 +1,13 @@
+{
+  "name": "Typescales",
+  "code": "plugin.js",
+  "icon": "/icon.png",
+  "description": "Generate typescales in Penpot",
+  "permissions": [
+    "content:read",
+    "content:write",
+    "page:read",
+    "file:read",
+    "selection:read"
+  ]
+}
