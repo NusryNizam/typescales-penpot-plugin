@@ -9,7 +9,13 @@ window.addEventListener("message", (event) => {
   }
 });
 
-function generateTypeScale(fontSize, scale, steps, negativeSteps) {
+function generateTypeScale(
+  fontSize: number,
+  scale: number,
+  steps: number,
+  negativeSteps: number,
+  shouldRound = false
+) {
   const sizes = [];
 
   // Generate sizes below base
@@ -29,6 +35,15 @@ function generateTypeScale(fontSize, scale, steps, negativeSteps) {
     });
   }
 
+  if (shouldRound) {
+    const roundedSizes = sizes.map((e) => ({
+      ...e,
+      fontSize: Math.round(e.fontSize),
+    }));
+
+    return roundedSizes;
+  }
+
   return sizes;
 }
 
@@ -39,6 +54,7 @@ let state = {
   steps: 2,
   negativeSteps: 1,
   typeScales: [],
+  shouldRound: false,
 };
 
 // DOM Elements
@@ -48,6 +64,7 @@ const scaleSelect = document.getElementById("scale"); // Renamed to better refle
 const stepsInput = document.getElementById("steps");
 const stepsBelowInput = document.getElementById("steps-below");
 const typeScaleContainer = document.getElementById("typescale-container");
+const roundCheckbox = document.getElementById("round-values");
 
 // Event Handlers
 function updateTypeScale() {
@@ -61,7 +78,8 @@ function updateTypeScale() {
       state.fontSize,
       state.scale,
       state.steps,
-      state.negativeSteps
+      state.negativeSteps,
+      state.shouldRound
     ).reverse();
     renderTypeScale();
   }
@@ -92,7 +110,7 @@ function renderTypeScale() {
 
 // Event Listeners
 fontSizeInput.addEventListener("input", (e) => {
-  let value = Number(e.target.value);
+  let value = Number((e.target as HTMLInputElement).value);
   if (value) {
     if (value < 0) value = 16;
     if (value > 1000) value = 1000;
@@ -102,12 +120,17 @@ fontSizeInput.addEventListener("input", (e) => {
 });
 
 scaleSelect.addEventListener("change", (e) => {
-  state.scale = Number(e.target.value);
+  state.scale = Number((e.target as HTMLSelectElement).value);
+  updateTypeScale();
+});
+
+roundCheckbox.addEventListener("change", () => {
+  state.shouldRound = (roundCheckbox as HTMLInputElement).checked;
   updateTypeScale();
 });
 
 stepsInput.addEventListener("input", (e) => {
-  let value = Number(e.target.value);
+  let value = Number((e.target as HTMLInputElement).value);
   if (value) {
     if (value > 20) value = 20;
     if (value < 2) value = 2;
@@ -117,7 +140,7 @@ stepsInput.addEventListener("input", (e) => {
 });
 
 stepsBelowInput.addEventListener("input", (e) => {
-  let value = Number(e.target.value);
+  let value = Number((e.target as HTMLInputElement).value);
   if (value) {
     if (value > 5) value = 5;
     if (value < 1) value = 1;
@@ -128,8 +151,14 @@ stepsBelowInput.addEventListener("input", (e) => {
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  console.log("Generated type scale:", state.typeScales);
+
+  parent.postMessage(
+    {
+      type: "generate",
+      data: state.typeScales,
+    },
+    "*"
+  );
 });
 
-// Initial render
 updateTypeScale();
